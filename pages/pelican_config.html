@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
         <meta charset="utf-8" />
-        <title>too - Tags</title>
+        <title>pelican config</title>
         <link rel="stylesheet" href="/theme/css/main.css" />
 
         <!--[if IE]>
@@ -15,18 +15,20 @@
                 <h1><a href="/">too </a></h1>
                 <nav><ul>
                     <li><a href="/">入门</a></li>
-                    <li><a href="/pages/pelican_config.html">pelican config</a></li>
+                    <li class="active"><a href="/pages/pelican_config.html">pelican config</a></li>
                     <li><a href="/pages/info1.html">天气</a></li>
                     <li><a href="/pages/info2.html">天气</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
-
 <section id="content" class="body">
-    <h1>Tags for too</h1>
-    <ul>
-    </ul>
+    <h1 class="entry-title">pelican config</h1>
+    
+    <p>给pelican加disqus的办法
+如果你用的默认模版（notmyidea）
+则它的模版路径如下
+path／to/pelican/lib/python2.7/site-packages/pelican-3.6.4.dev0-py2.7.egg/pelican/themes/notmyidea/templates</p>
+<p>然后修改templates目录下的base.html，把disqus给的js代码加入</p>
 </section>
-
 
 
 
