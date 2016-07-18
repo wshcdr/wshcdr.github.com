@@ -19,7 +19,7 @@
 
   <title>
     Alex | Blog
-&ndash; Categories  </title>
+&ndash; Tag: themes  </title>
 
 </head>
 
@@ -41,18 +41,30 @@
     <header>
       <p>
       <a href="http://localhost:8000">Index</a> &brvbar; <a href="http://localhost:8000/archive/">Archives</a>
+&gt; Tag: themes
       </p>
     </header>
 
 <article>
+  <div class="article_title">
+    <h2><a href="http://localhost:8000/2015/04/18/pelican-config/">pelican config</a></h2>
+  </div>
   <div class="article_text">
-    <ul>
-      <li><a href="http://localhost:8000/category/system-administration/">System Administration</a> (1)</li>
-      <li><a href="http://localhost:8000/category/tech/">Tech</a> (3)</li>
-    </ul>
+    <p>给pelican加disqus的办法
+如果你用的默认模版（notmyidea）
+则它的模版路径如下
+path／to/pelican/lib/python2.7/site-packages/pelican-3.6.4.dev0-py2.7.egg/pelican/themes/notmyidea/templates</p>
+<p>然后修改templates目录下的base.html，把disqus给的js代码加入</p>
   </div>
 </article>
 
+<!--
+<footer>
+<div id="paginator">
+
+</div>
+</footer>
+-->
 
     <div id="ending_message">
       <p>&copy; Alex. Built using <a href="http://getpelican.com" target="_blank">Pelican</a>. Theme by Giulio Fidente on <a href="https://github.com/gfidente/pelican-svbhack" target="_blank">github</a>. </p>

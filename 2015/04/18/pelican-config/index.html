@@ -16,10 +16,15 @@
   <meta name="description" content="Posts and writings by Alex">
 
 
+<meta name="keywords" content="pelican, themes" >
+<meta property="og:image" content="https://wordpress.com/i/blank.jpg" />
+<meta property="og:title" content="pelican config" />
+<meta property="og:url" content="http://localhost:8000/2015/04/18/pelican-config/" />
+<meta property="og:type" content="article" />
 
   <title>
     Alex | Blog
-&ndash; Categories  </title>
+&ndash; pelican config  </title>
 
 </head>
 
@@ -45,12 +50,24 @@
     </header>
 
 <article>
-  <div class="article_text">
-    <ul>
-      <li><a href="http://localhost:8000/category/system-administration/">System Administration</a> (1)</li>
-      <li><a href="http://localhost:8000/category/tech/">Tech</a> (3)</li>
-    </ul>
+  <div class="article_title">
+    <h2><a href="http://localhost:8000/2015/04/18/pelican-config/">pelican config</a></h2>
   </div>
+  <div class="article_text">
+    <p>给pelican加disqus的办法
+如果你用的默认模版（notmyidea）
+则它的模版路径如下
+path／to/pelican/lib/python2.7/site-packages/pelican-3.6.4.dev0-py2.7.egg/pelican/themes/notmyidea/templates</p>
+<p>然后修改templates目录下的base.html，把disqus给的js代码加入</p>
+  </div>
+  <div class="article_meta">
+    <p>Posted on: 2015-04-18</p>
+    <p>Category: <a href="http://localhost:8000/category/tech/">Tech</a>
+ &ndash; Tags:
+      <a href="http://localhost:8000/tag/pelican/">pelican</a>,      <a href="http://localhost:8000/tag/themes/">themes</a>    </p>
+  </div>
+
+
 </article>
 
 
