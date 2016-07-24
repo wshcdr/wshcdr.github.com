@@ -16,10 +16,15 @@
   <meta name="description" content="Posts and writings by Alex">
 
 
+<meta name="keywords" content="Beta reduction" >
+<meta property="og:image" content="https://wordpress.com/i/blank.jpg" />
+<meta property="og:title" content="lambda-calculus-reduction" />
+<meta property="og:url" content="http://wshcdr.github.io/2015/04/18/lambda/" />
+<meta property="og:type" content="article" />
 
   <title>
     Alex | Blog
-  </title>
+&ndash; lambda-calculus-reduction  </title>
 
 </head>
 
@@ -46,67 +51,42 @@
 
 <article>
   <div class="article_title">
-    <h2><a href="http://wshcdr.github.io/2015/05/10/my-cv/">My CV</a></h2>
-  </div>
-  <div class="article_text">
-    <h1>My CV</h1>
-  </div>
-</article>
-<hr />
-<article>
-  <div class="article_title">
-    <h2><a href="http://wshcdr.github.io/2015/04/22/elasticsearch/">Elasticsearch</a></h2>
-  </div>
-  <div class="article_text">
-    <p><a href="http://www.oschina.net/translate/elasticsearch-getting-started?cmp">Elasticsearch</a></p>
-  </div>
-</article>
-<hr />
-<article>
-  <div class="article_title">
     <h2><a href="http://wshcdr.github.io/2015/04/18/lambda/">lambda-calculus-reduction</a></h2>
   </div>
   <div class="article_text">
     <p>Beta reduction
 some examples from internet:</p>
-<p>(lx.ly.y x)(lz.u) &#174; ly.y(lz.u)</p>
-<p>(lx. x x)(lz.u) &#174; (lz.u) (lz.u ...<a class="read-more" href="http://wshcdr.github.io//2015/04/18/lambda/"><span>continue reading</span></a></p>
+<p>(lx.ly.y x)(lz.u) ® ly.y(lz.u)</p>
+<p>(lx. x x)(lz.u) ® (lz.u) (lz.u)</p>
+<p>(ly.y a)((lx. x)(lz.(lu.u) z)) ® (ly.y a)(lz.(lu.u) z)</p>
+<p>(ly.y a)((lx. x)(lz.(lu.u) z)) ® (ly.y a)((lx. x)(lz. z))</p>
+<p>(ly.y a)((lx. x)(lz.(lu.u) z)) ® ((lx. x)(lz.(lu.u) z)) a</p>
+<p><a href="http://stackoverflow.com/questions/3358277/lambda-calculus-reduction">another ref</a></p>
   </div>
-</article>
-<hr />
-<article>
-  <div class="article_title">
-    <h2><a href="http://wshcdr.github.io/2015/04/18/pelican-config/">pelican config</a></h2>
+  <div class="article_meta">
+    <p>Posted on: 2015-04-18</p>
+    <p>Category: <a href="http://wshcdr.github.io/category/tech/">Tech</a>
+ &ndash; Tags:
+      <a href="http://wshcdr.github.io/tag/beta-reduction/">Beta reduction</a>    </p>
   </div>
-  <div class="article_text">
-    <p>给pelican加disqus的办法
-如果你用的默认模版（notmyidea）
-则它的模版路径如下
-path／to/pelican/lib/python2.7/site-packages/pelican-3.6.4.dev0-py2.7.egg/pelican/themes/notmyidea/templates</p>
-<p>然后修改templates目录下的base.html，把disqus给的js代码加入</p>
-  </div>
-</article>
-<hr />
-<article>
-  <div class="article_title">
-    <h2><a href="http://wshcdr.github.io/2015/04/10/nodejs/">Nodejs</a></h2>
-  </div>
-  <div class="article_text">
-    <h2>Nodejs + reactjs</h2>
-  </div>
+
+
 </article>
 
-<!--
-<footer>
-<div id="paginator">
-
-</div>
-</footer>
--->
 
     <div id="ending_message">
       <p>&copy; Alex. Built using <a href="http://getpelican.com" target="_blank">Pelican</a>. Theme by Giulio Fidente on <a href="https://github.com/gfidente/pelican-svbhack" target="_blank">github</a>. </p>
     </div>
   </main>
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-64084460-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
 </body>
 </html>
