@@ -66,8 +66,31 @@
   </div>
   <div class="article_text">
     <p>值得注意的一些重要概念<br />
-cps<br />
-尾递归  </p>
+cps  </p>
+<p>cps全称叫continuation passing style，简要来讲就是告诉函数下一步做什么的递归方式，由于普通递归有栈溢出的问题，而cps都是尾递归(tail recursion)，尾递归则是没有栈溢出问题的，所以haskell推荐都用cps的方式去编写代码。</p>
+<p>当然，相对于普通递归方式，cps也有着非常不便于理解的问题。</p>
+<p>def fact(n):
+    if (n==0):
+        return 1
+    else:
+        return n* fact(n-1)
+print fact(400)
+这是一段递归求阶乘的python代码。用cps改写就是</p>
+<p>def fact_cps(n,ret):
+    if (n==0):
+        ret(1)
+    else:
+        fact_cps(n-1, lambda x:ret(n*x))
+def ret2(x):
+    print x
+fact_cps(400,ret2)
+这里要注意的是，我们在传参数的时候多了一个ret，而这个ret其实是一个函数，函数的作用就是传入一个值并打印他。在实际运行过程中，其实是这样子的</p>
+<p>以fact_cps(3,ret2)求3的阶乘为例，第一步我们是执行fact_cps(3,ret2)，到第五行的地方，我们执行的是fact_cps(2, lambda x:ret2(3*x))，这里的ret即最外层的ret2</p>
+<p>fact_cps中的lambda x:ret (3<em>x)其实是一个函数的简单写法，也就是说这是一个输入x的函数，然后运算ret(3</em>x)</p>
+<p>第二步调用以后，fact_cps的输入值是2以及一个叫做lambda x:ret(3<em>x)的函数，也就是说ret函数变成了ret(x): print (3</em>x) 然后到第五行调用fact_cps(1,lambda x:ret(2<em>x))即fact_cps(1,lambda x:ret2(3</em>2*x))</p>
+<p>第三布调用的就是fact_cps(0,lambda x:ret2(3<em>2</em>1<em>x))，然后到第三行结束，所以总的一个计算其实就是lambda x:ret2(3</em>2<em>1</em>x)然后将最后一次调用的1带入，得到6。</p>
+<p>这中间我们可以看到，和普通递归传递的是参数不同，cps调用每一步都产生一个新的函数，传递给下一步调用，这个传递的函数告诉了被递归函数下一步做的是什么。</p>
+<p>尾递归  </p>
 <p><a href="http://rlgomes.github.io/work/haskell/2011/10/31/20.00-Custom-data-types-in-Haskell.html">custom data types</a></p>
   </div>
   <div class="article_meta">
