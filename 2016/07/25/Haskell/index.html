@@ -90,7 +90,83 @@ fact_cps(400,ret2)
 <p>第二步调用以后，fact_cps的输入值是2以及一个叫做lambda x:ret(3<em>x)的函数，也就是说ret函数变成了ret(x): print (3</em>x) 然后到第五行调用fact_cps(1,lambda x:ret(2<em>x))即fact_cps(1,lambda x:ret2(3</em>2*x))</p>
 <p>第三布调用的就是fact_cps(0,lambda x:ret2(3<em>2</em>1<em>x))，然后到第三行结束，所以总的一个计算其实就是lambda x:ret2(3</em>2<em>1</em>x)然后将最后一次调用的1带入，得到6。</p>
 <p>这中间我们可以看到，和普通递归传递的是参数不同，cps调用每一步都产生一个新的函数，传递给下一步调用，这个传递的函数告诉了被递归函数下一步做的是什么。</p>
-<p>尾递归  </p>
+<p>尾递归<br />
+尾递归就是从最后开始计算, 每递归一次就算出相应的结果, 也就是说, 函数调用出现在调用者函数的尾部, 因为是尾部, 所以根本没有必要去保存任何局部变量. 直接让被调用的函数返回时越过调用者, 返回到调用者的调用者去。尾递归就是把当前的运算结果（或路径）放在参数里传给下层函数，<br />
+线性递归:
+　　long Recursive(long n) {
+　　return(n == 1) ? 1 : n * Recursive(n - 1);
+　　}
+　　尾递归:
+　　long TailRecursive(long n, long a) {
+　　return(n == 1) ? a : TailRecursive(n - 1, a * n);
+　　}
+　　long TailRecursive(long n) {//封装用的
+　　return(n == 0) ? 1 : TailRecursive(n, 1);
+　　}
+　　当n = 5时
+　　对于线性递归, 他的递归过程如下:
+　　Recursive(5)
+　　{5 * Recursive(4)}
+　　{5 * {4 * Recursive(3)}}
+　　{5 * {4 * {3 * Recursive(2)}}}
+　　{5 * {4 * {3 * {2 * Recursive(1)}}}}
+　　{5 * {4 * {3 * {2 * 1}}}}
+　　{5 * {4 * {3 * 2}}}
+　　{5 * {4 * 6}}
+　　{5 * 24}
+　　120
+　　对于尾递归, 他的递归过程如下:
+　　TailRecursive(5)
+　　TailRecursive(5, 1)
+　　TailRecursive(4, 5)
+　　TailRecursive(3, 20)
+　　TailRecursive(2, 60)
+　　TailRecursive(1, 120)
+　　120
+    //</p>
+<div class="highlight"><pre><span class="cp">#include &lt;stdlib.h&gt;</span>
+<span class="cp">#include &lt;stdio.h&gt;</span>
+
+<span class="kt">long</span> <span class="nf">TailRecursive</span><span class="p">(</span><span class="kt">long</span> <span class="n">n</span><span class="p">,</span> <span class="kt">long</span> <span class="n">a</span><span class="p">)</span> <span class="p">{</span>
+<span class="k">return</span><span class="p">(</span><span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="o">?</span> <span class="nl">a</span> <span class="p">:</span> <span class="n">TailRecursive</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">a</span> <span class="o">*</span> <span class="n">n</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="kt">long</span> <span class="nf">TailRecursive</span><span class="p">(</span><span class="kt">long</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+<span class="k">return</span><span class="p">(</span><span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">?</span> <span class="mi">1</span> <span class="o">:</span> <span class="n">TailRecursive</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;%ld&quot;</span><span class="p">,</span> <span class="n">TailRecursive</span><span class="p">(</span><span class="mi">5</span><span class="p">));</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+
+
+
+
+<span class="cp">####tail recursion in haskell</span>
+
+<span class="n">sum</span><span class="err">&#39;</span> <span class="o">::</span> <span class="p">(</span><span class="n">num</span> <span class="n">a</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="o">-&gt;</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="n">a</span>
+<span class="n">sum</span><span class="err">&#39;</span> <span class="p">(</span><span class="nl">x</span><span class="p">:</span><span class="n">xs</span><span class="p">)</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">sum</span><span class="err">&#39;</span> <span class="n">xs</span> <span class="n">x</span><span class="o">+</span> <span class="n">temp</span>
+<span class="n">sum</span><span class="err">&#39;</span> <span class="p">[]</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">temp</span>
+<span class="err">我们这样调用它</span><span class="o">:</span> <span class="n">sum</span><span class="err">&#39;</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="mi">0</span><span class="err">。</span>
+<span class="err">它的执行顺序是这样的</span><span class="o">:</span>
+<span class="n">sum</span><span class="err">&#39;</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="mi">0</span> <span class="o">-&gt;</span>
+
+<span class="n">sum</span><span class="err">&#39;</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="mi">1</span> <span class="o">-&gt;</span>
+
+<span class="n">sum</span><span class="err">&#39;</span> <span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="mi">3</span> <span class="o">-&gt;</span>
+
+<span class="n">sum</span><span class="err">&#39;</span> <span class="p">[]</span>  <span class="mi">6</span> <span class="o">-&gt;</span>
+
+<span class="mi">6</span>
+</pre></div>
+
+
+<p>很容易看出, 普通的线性递归比尾递归更加消耗资源, 在实现上说, 每次重复的过程
+　　调用都使得调用链条不断加长. 系统不得不使用栈进行数据保存和恢复.而尾递归就
+　　不存在这样的问题, 因为他的状态完全由n和a保存.</p>
 <p><a href="http://rlgomes.github.io/work/haskell/2011/10/31/20.00-Custom-data-types-in-Haskell.html">custom data types</a></p>
   </div>
   <div class="article_meta">
