@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="generator" content="VuePress 2.0.0-rc.15" />
+    <style>
+      :root {
+        --vp-c-bg: #fff;
+      }
+
+      [data-theme='dark'] {
+        --vp-c-bg: #1b1b1f;
+      }
+
+      html,
+      body {
+        background-color: var(--vp-c-bg);
+      }
+    </style>
+    <script>
+      const userMode = localStorage.getItem('vuepress-color-scheme')
+      const systemDarkMode =
+        'matchMedia' in window
+          ? window.matchMedia('(prefers-color-scheme: dark)').matches
+          : false
+
+      if (userMode === 'light') {
+        document.documentElement.dataset.theme = 'light'
+      } else if (userMode === 'dark' || systemDarkMode) {
+        document.documentElement.dataset.theme = 'dark'
+      }
+    </script>
+    <link rel="icon" href="/img/logo.png"><title>Blog dedicate to Pelican</title><meta name="description" content="">
+    <link rel="preload" href="/assets/style-Cc2FVxPq.css" as="style"><link rel="stylesheet" href="/assets/style-Cc2FVxPq.css">
+    <link rel="modulepreload" href="/assets/app-DZNMqC8l.js"><link rel="modulepreload" href="/assets/404.html-DNkLCQi7.js">
+    <link rel="prefetch" href="/assets/1.html-BjZFp1Vp.js" as="script"><link rel="prefetch" href="/assets/2.html-DpOvTnS0.js" as="script"><link rel="prefetch" href="/assets/index.html-LNK0ZoQy.js" as="script"><link rel="prefetch" href="/assets/Elasticsearch.html-GDY1mUJi.js" as="script"><link rel="prefetch" href="/assets/home.html-B3Feqv3G.js" as="script"><link rel="prefetch" href="/assets/two.html-BV3bTifu.js" as="script"><link rel="prefetch" href="/assets/index.html-B3ishG31.js" as="script">
+  </head>
+  <body>
+    <div id="app"><!--[--><div class="vp-theme-container" vp-container data-v-72fdcb4a><main class="page" data-v-72fdcb4a><div class="theme-default-content" vp-content data-v-72fdcb4a><h1 data-v-72fdcb4a>404</h1><blockquote data-v-72fdcb4a>How did we get here?</blockquote><a class="route-link" href="/" data-v-72fdcb4a>Take me home</a></div></main></div><!--[--><!----><!--]--><!--]--></div>
+    <script type="module" src="/assets/app-DZNMqC8l.js" defer></script>
+  </body>
+</html>

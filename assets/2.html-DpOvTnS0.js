@@ -1,0 +1,1 @@
+import{_ as t,c as a,a as n,o as r}from"./app-DZNMqC8l.js";const l={};function o(s,e){return r(),a("div",null,e[0]||(e[0]=[n("p",null,"'## 第二的'",-1)]))}const _=t(l,[["render",o],["__file","2.html.vue"]]),m=JSON.parse('{"path":"/2.html","title":"","lang":"en-US","frontmatter":{},"headers":[],"git":{},"filePathRelative":"2.md"}');export{_ as comp,m as data};
