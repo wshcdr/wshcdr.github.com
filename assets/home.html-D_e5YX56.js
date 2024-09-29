@@ -1,1 +1,0 @@
-import{_ as t,c as o,a,o as m}from"./app-D2apOpb9.js";const n={};function r(l,e){return m(),o("div",null,e[0]||(e[0]=[a("p",null,"我的Home",-1)]))}const c=t(n,[["render",r],["__file","home.html.vue"]]),h=JSON.parse('{"path":"/home/home.html","title":"","lang":"en-US","frontmatter":{},"headers":[],"git":{},"filePathRelative":"home/home.md"}');export{c as comp,h as data};

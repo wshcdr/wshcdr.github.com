@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- ## for client-side less
+  <link rel="stylesheet/less" type="text/css" href="http://wshcdr.github.io/theme/css/style.less">
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/less.js/1.7.3/less.min.js" type="text/javascript"></script>
+  -->
+  <link rel="stylesheet" type="text/css" href="http://wshcdr.github.io/theme/css/style.css">
+  <link rel="stylesheet" type="text/css" href="http://wshcdr.github.io/theme/css/pygments.css">
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=PT+Sans|PT+Serif|PT+Mono">
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Alex">
+  <meta name="description" content="Posts and writings by Alex">
+
+
+<meta name="keywords" content="Haskell, Function Language" >
+<meta property="og:image" content="https://wordpress.com/i/blank.jpg" />
+<meta property="og:title" content="Haskell" />
+<meta property="og:url" content="http://wshcdr.github.io/2016/07/25/Haskell/" />
+<meta property="og:type" content="article" />
+
+  <title>
+    Alex | Blog
+&ndash; Haskell  </title>
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-64084460-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+</head>
+
+<body>
+  <aside>
+    <div id="user_meta">
+      <a href="http://wshcdr.github.io">
+        <img src="http://wshcdr.github.io/theme/images/logo.png" alt="logo">
+      </a>
+      <h2><a href="http://wshcdr.github.io">Alex</a></h2>
+      <p></p>
+      <ul>
+        <li><a href="https://github.com/wshcdr/" target="_blank">Github</a></li>
+      </ul>
+    </div>
+  </aside>
+
+  <main>
+    <header>
+      <p>
+      <a href="http://wshcdr.github.io">Index</a> &brvbar; <a href="http://wshcdr.github.io/archive/">Archives</a>
+      </p>
+    </header>
+
+<article>
+  <div class="article_title">
+    <h2><a href="http://wshcdr.github.io/2016/07/25/Haskell/">Haskell</a></h2>
+  </div>
+  <div class="article_text">
+    <p>值得注意的一些重要概念<br />
+cps  </p>
+<p>cps全称叫continuation passing style，简要来讲就是告诉函数下一步做什么的递归方式，由于普通递归有栈溢出的问题，而cps都是尾递归(tail recursion)，尾递归则是没有栈溢出问题的，所以haskell推荐都用cps的方式去编写代码。</p>
+<p>当然，相对于普通递归方式，cps也有着非常不便于理解的问题。</p>
+<p>def fact(n):
+    if (n==0):
+        return 1
+    else:
+        return n* fact(n-1)
+print fact(400)
+这是一段递归求阶乘的python代码。用cps改写就是</p>
+<p>def fact_cps(n,ret):
+    if (n==0):
+        ret(1)
+    else:
+        fact_cps(n-1, lambda x:ret(n*x))
+def ret2(x):
+    print x
+fact_cps(400,ret2)
+这里要注意的是，我们在传参数的时候多了一个ret，而这个ret其实是一个函数，函数的作用就是传入一个值并打印他。在实际运行过程中，其实是这样子的</p>
+<p>以fact_cps(3,ret2)求3的阶乘为例，第一步我们是执行fact_cps(3,ret2)，到第五行的地方，我们执行的是fact_cps(2, lambda x:ret2(3*x))，这里的ret即最外层的ret2</p>
+<p>fact_cps中的lambda x:ret (3<em>x)其实是一个函数的简单写法，也就是说这是一个输入x的函数，然后运算ret(3</em>x)</p>
+<p>第二步调用以后，fact_cps的输入值是2以及一个叫做lambda x:ret(3<em>x)的函数，也就是说ret函数变成了ret(x): print (3</em>x) 然后到第五行调用fact_cps(1,lambda x:ret(2<em>x))即fact_cps(1,lambda x:ret2(3</em>2*x))</p>
+<p>第三布调用的就是fact_cps(0,lambda x:ret2(3<em>2</em>1<em>x))，然后到第三行结束，所以总的一个计算其实就是lambda x:ret2(3</em>2<em>1</em>x)然后将最后一次调用的1带入，得到6。</p>
+<p>这中间我们可以看到，和普通递归传递的是参数不同，cps调用每一步都产生一个新的函数，传递给下一步调用，这个传递的函数告诉了被递归函数下一步做的是什么。</p>
+<p>尾递归<br />
+尾递归就是从最后开始计算, 每递归一次就算出相应的结果, 也就是说, 函数调用出现在调用者函数的尾部, 因为是尾部, 所以根本没有必要去保存任何局部变量. 直接让被调用的函数返回时越过调用者, 返回到调用者的调用者去。尾递归就是把当前的运算结果（或路径）放在参数里传给下层函数，<br />
+线性递归:
+　　long Recursive(long n) {
+　　return(n == 1) ? 1 : n * Recursive(n - 1);
+　　}
+　　尾递归:
+　　long TailRecursive(long n, long a) {
+　　return(n == 1) ? a : TailRecursive(n - 1, a * n);
+　　}
+　　long TailRecursive(long n) {//封装用的
+　　return(n == 0) ? 1 : TailRecursive(n, 1);
+　　}
+　　当n = 5时
+　　对于线性递归, 他的递归过程如下:
+　　Recursive(5)
+　　{5 * Recursive(4)}
+　　{5 * {4 * Recursive(3)}}
+　　{5 * {4 * {3 * Recursive(2)}}}
+　　{5 * {4 * {3 * {2 * Recursive(1)}}}}
+　　{5 * {4 * {3 * {2 * 1}}}}
+　　{5 * {4 * {3 * 2}}}
+　　{5 * {4 * 6}}
+　　{5 * 24}
+　　120
+　　对于尾递归, 他的递归过程如下:
+　　TailRecursive(5)
+　　TailRecursive(5, 1)
+　　TailRecursive(4, 5)
+　　TailRecursive(3, 20)
+　　TailRecursive(2, 60)
+　　TailRecursive(1, 120)
+　　120
+    //</p>
+<div class="highlight"><pre><span class="cp">#include &lt;stdlib.h&gt;</span>
+<span class="cp">#include &lt;stdio.h&gt;</span>
+
+<span class="kt">long</span> <span class="nf">TailRecursive</span><span class="p">(</span><span class="kt">long</span> <span class="n">n</span><span class="p">,</span> <span class="kt">long</span> <span class="n">a</span><span class="p">)</span> <span class="p">{</span>
+<span class="k">return</span><span class="p">(</span><span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="o">?</span> <span class="nl">a</span> <span class="p">:</span> <span class="n">TailRecursive</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">a</span> <span class="o">*</span> <span class="n">n</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="kt">long</span> <span class="nf">TailRecursive</span><span class="p">(</span><span class="kt">long</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+<span class="k">return</span><span class="p">(</span><span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">?</span> <span class="mi">1</span> <span class="o">:</span> <span class="n">TailRecursive</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;%ld&quot;</span><span class="p">,</span> <span class="n">TailRecursive</span><span class="p">(</span><span class="mi">5</span><span class="p">));</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+
+
+
+
+<span class="cp">####tail recursion in haskell</span>
+
+<span class="n">sum</span><span class="err">&#39;</span> <span class="o">::</span> <span class="p">(</span><span class="n">num</span> <span class="n">a</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="o">-&gt;</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="n">a</span>
+<span class="n">sum</span><span class="err">&#39;</span> <span class="p">(</span><span class="nl">x</span><span class="p">:</span><span class="n">xs</span><span class="p">)</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">sum</span><span class="err">&#39;</span> <span class="n">xs</span> <span class="n">x</span><span class="o">+</span> <span class="n">temp</span>
+<span class="n">sum</span><span class="err">&#39;</span> <span class="p">[]</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">temp</span>
+<span class="err">我们这样调用它</span><span class="o">:</span> <span class="n">sum</span><span class="err">&#39;</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="mi">0</span><span class="err">。</span>
+<span class="err">它的执行顺序是这样的</span><span class="o">:</span>
+<span class="n">sum</span><span class="err">&#39;</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="mi">0</span> <span class="o">-&gt;</span>
+
+<span class="n">sum</span><span class="err">&#39;</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="mi">1</span> <span class="o">-&gt;</span>
+
+<span class="n">sum</span><span class="err">&#39;</span> <span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="mi">3</span> <span class="o">-&gt;</span>
+
+<span class="n">sum</span><span class="err">&#39;</span> <span class="p">[]</span>  <span class="mi">6</span> <span class="o">-&gt;</span>
+
+<span class="mi">6</span>
+</pre></div>
+
+
+<p>很容易看出, 普通的线性递归比尾递归更加消耗资源, 在实现上说, 每次重复的过程
+　　调用都使得调用链条不断加长. 系统不得不使用栈进行数据保存和恢复.而尾递归就
+　　不存在这样的问题, 因为他的状态完全由n和a保存.</p>
+<p><a href="http://rlgomes.github.io/work/haskell/2011/10/31/20.00-Custom-data-types-in-Haskell.html">custom data types</a></p>
+  </div>
+  <div class="article_meta">
+    <p>Posted on: 2016-07-25</p>
+    <p>Category: <a href="http://wshcdr.github.io/category/tech/">Tech</a>
+ &ndash; Tags:
+      <a href="http://wshcdr.github.io/tag/haskell/">Haskell</a>,      <a href="http://wshcdr.github.io/tag/function-language/">Function Language</a>    </p>
+  </div>
+
+  <div id="article_comments">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        var disqus_identifier = "2016/07/25/Haskell/";
+        (function() {
+             var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+             dsq.src = 'http://wshcdr1.disqus.com/embed.js';
+             (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+         })();
+    </script>
+  </div>
+
+</article>
+
+
+    <div id="ending_message">
+      <p>&copy; Alex. Built using <a href="http://getpelican.com" target="_blank">Pelican</a>. Theme by Giulio Fidente on <a href="https://github.com/gfidente/pelican-svbhack" target="_blank">github</a>. </p>
+    </div>
+  </main>
+</body>
+</html>
